@@ -47,7 +47,28 @@ class TelegramController extends Controller
                     ])
                 ]);
             } elseif ($text === 'appeal') {
-                $this->sendFeedbackForm($chatId);
+                $keyboard = [
+                    [
+                        ['text' => 'Введите имя', 'callback_data' => 'name']
+                    ],
+                    [
+                        ['text' => 'Введите email', 'callback_data' => 'email']
+                    ],
+                    [
+                        ['text' => 'Введите сообщение', 'callback_data' => 'message']
+                    ],
+                    [
+                        ['text' => 'Отправить', 'callback_data' => 'send']
+                    ]
+                ];
+        
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Пожалуйста, заполните форму обратной связи:',
+                    'reply_markup' => json_encode([
+                        'inline_keyboard' => $keyboard
+                    ])
+                ]);
             }
         }
 
@@ -82,36 +103,32 @@ class TelegramController extends Controller
                 session(['user.' . $userId => $userData]);
 
                 if ($data === 'name') {
-                    $this->sendFeedbackForm($chatId);
+                    $keyboard = [
+                        [
+                            ['text' => 'Введите имя', 'callback_data' => 'name']
+                        ],
+                        [
+                            ['text' => 'Введите email', 'callback_data' => 'email']
+                        ],
+                        [
+                            ['text' => 'Введите сообщение', 'callback_data' => 'message']
+                        ],
+                        [
+                            ['text' => 'Отправить', 'callback_data' => 'send']
+                        ]
+                    ];
+            
+                    Telegram::sendMessage([
+                        'chat_id' => $chatId,
+                        'text' => 'Пожалуйста, заполните форму обратной связи:',
+                        'reply_markup' => json_encode([
+                            'inline_keyboard' => $keyboard
+                        ])
+                    ]);
                 }
             }
 
             return response()->json(['status' => 'success']);
         }
-    }
-    public function sendFeedbackForm(int $chatId)
-    {
-        $keyboard = [
-            [
-                ['text' => 'Введите имя', 'callback_data' => 'name']
-            ],
-            [
-                ['text' => 'Введите email', 'callback_data' => 'email']
-            ],
-            [
-                ['text' => 'Введите сообщение', 'callback_data' => 'message']
-            ],
-            [
-                ['text' => 'Отправить', 'callback_data' => 'send']
-            ]
-        ];
-
-        Telegram::sendMessage([
-            'chat_id' => $chatId,
-            'text' => 'Пожалуйста, заполните форму обратной связи:',
-            'reply_markup' => json_encode([
-                'inline_keyboard' => $keyboard
-            ])
-        ]);
     }
 }
