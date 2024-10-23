@@ -65,68 +65,23 @@ class TelegramController extends Controller
 
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Пожалуйста, заполните форму обратной связи:',
-                    'reply_markup' => json_encode([
-                        'inline_keyboard' => $keyboard
-                    ])
-                ]);
-            } else {
-                $userData = session($userId, []);
-                $userData[] = $text;
-                session(['user.' . $userId => $userData]);
-                Log::info(json_encode($userData));
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Введите email:',
+                    'text' => 'Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n
+                    #Тема:\n
+                    #Метка:\n
+                #Исполнитель:\n
+                #Услуга:\n
+                #Приоритет:\n
+                #Суть обращения:\n
+                \nНапример:\n
+                #Тема: Заявка на подключение\n
+                #Метка: Новая\n
+                #Исполнитель: Иванов И.И.\n
+                #Услуга: Интернет\n
+                #Приоритет: Высокий\n
+                #Суть обращения: Хочу подключить интернет к новому адресу.',
                     'reply_markup' => json_encode(['force_reply' => true])
                 ]);
             }
-        }
-
-        if ($update->getCallbackQuery()) {
-            $callbackQuery = $update->getCallbackQuery();
-            $data = $callbackQuery->getData();
-            $chatId = $callbackQuery->getMessage()->getChat()->getId();
-            $userId = $callbackQuery->getFrom()->getId();
-
-            $userData = session($userId, []);
-
-            if (in_array($data, ['name', 'email', 'message'])) {
-
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Введите ' . $data . ':',
-                ]);
-            } else {
-                $text = $callbackQuery->getMessage()->getText();
-                $userData[$data] = $text;
-                session(['user.' . $userId => $userData]);
-
-                $keyboard = [
-                    [
-                        ['text' => 'Введите имя', 'callback_data' => 'name']
-                    ],
-                    [
-                        ['text' => 'Введите email', 'callback_data' => 'email']
-                    ],
-                    [
-                        ['text' => 'Введите сообщение', 'callback_data' => 'message']
-                    ],
-                    [
-                        ['text' => 'Отправить', 'callback_data' => 'send']
-                    ]
-                ];
-
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Пожалуйста, заполните форму обратной связи:',
-                    'reply_markup' => json_encode([
-                        'inline_keyboard' => $keyboard
-                    ])
-                ]);
-            }
-
-            return response()->json(['status' => 'success']);
         }
     }
 }
