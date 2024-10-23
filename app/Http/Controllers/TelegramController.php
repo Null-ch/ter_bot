@@ -50,7 +50,7 @@ class TelegramController extends Controller
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
                 ->first();
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
                 $message = [
@@ -88,7 +88,7 @@ class TelegramController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
                 $message = [
