@@ -8,38 +8,6 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
 {
-    public function handleWebhook(Request $request)
-    {
-        $updates = Telegram::getUpdates();
-        $message = $updates['message']['text'];
-        $chat = $updates['message']['chat']['id'];
-        // if ($updates->getMessage()) {
-        //     $chatId = $updates->getMessage()->getChat()->getId();
-        //     $text = $updates->getMessage()->getText();
-
-        //     // Обработка команды /start
-        //     if ($text === '/start') {
-        //         Telegram::sendMessage([
-        //             'chat_id' => $chatId,
-        //             'text' => 'Привет! Я ваш Telegram-бот. Что вы хотите сделать?',
-        //         ]);
-        //     } else {
-        //         // Обработка других сообщений
-        //         Telegram::sendMessage([
-        //             'chat_id' => $chatId,
-        //             'text' => 'Вы написали: ' . $text,
-        //         ]);
-        //     }
-        // }
-        // if ($message === '/start') {
-            Telegram::sendMessage([
-                'chat_id' => $chat,
-                'text' => $message,
-                'parse_mode' => 'HTML'
-            ]);
-        // }
-    }
-
     public function setWebhook()
     {
         $token = env('TELEGRAM_BOT_TOKEN');
@@ -55,6 +23,21 @@ class TelegramController extends Controller
             return 'Вебхук успешно установлен!';
         } else {
             return 'Ошибка';
+        }
+    }
+    public function handleWebhook(Request $request)
+    {
+        $updates = Telegram::getWebhookUpdates();
+        $message = $updates['message']['text'];
+        $chat = $updates['message']['chat']['id'];
+
+        if ($message === '/start') {
+            Telegram::sendMessage([
+                'chat_id' => $chat,
+                'text' => 'Добрый день, чем можем помочь?',
+                'parse_mode' => 'HTML'
+            ]);
+            return;
         }
     }
 }
