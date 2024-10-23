@@ -69,7 +69,8 @@ class TelegramController extends Controller
 
         if ($update->getMessage()) {
             $userId = $update->getMessage()->getFrom()->getId();
-            if ($userId == '395590080') {
+            $text = $update->getMessage()->getText();
+            if (in_array($userId, $admins) || $text == '/start') {
                 return;
             }
             $chatId = $update->getMessage()->getChat()->getId();
@@ -78,7 +79,6 @@ class TelegramController extends Controller
             if (!$groupName) {
                 $groupName = 'Личные сообщения';
             }
-            $text = $update->getMessage()->getText();
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
             $username = $user->getFirstName() . " " . $user->getLastName();
