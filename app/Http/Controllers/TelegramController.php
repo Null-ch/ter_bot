@@ -30,6 +30,7 @@ class TelegramController extends Controller
     {
         $update = Telegram::getWebhookUpdates();
         Log::info('Получено сообщение:');
+        dd($update->getMessage());
         // Проверяем, содержит ли обновление сообщение
         if ($update->getMessage()) {
             // Получаем ID чата
