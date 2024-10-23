@@ -10,28 +10,34 @@ class TelegramController extends Controller
 {
     public function handleUpdate(Request $request)
     {
-        $update = Telegram::getWebhookUpdates();
+        $updates = Telegram::getWebhookUpdates();
+        $message = $updates['message']['text'];
+        $chat = $updates['message']['chat']['id'];
+        // if ($updates->getMessage()) {
+        //     $chatId = $updates->getMessage()->getChat()->getId();
+        //     $text = $updates->getMessage()->getText();
 
-        if ($update->getMessage()) {
-            $chatId = $update->getMessage()->getChat()->getId();
-            $text = $update->getMessage()->getText();
-
-            // Обработка команды /start
-            if ($text === '/start') {
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Привет! Я ваш Telegram-бот. Что вы хотите сделать?',
-                ]);
-            } else {
-                // Обработка других сообщений
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Вы написали: ' . $text,
-                ]);
-            }
+        //     // Обработка команды /start
+        //     if ($text === '/start') {
+        //         Telegram::sendMessage([
+        //             'chat_id' => $chatId,
+        //             'text' => 'Привет! Я ваш Telegram-бот. Что вы хотите сделать?',
+        //         ]);
+        //     } else {
+        //         // Обработка других сообщений
+        //         Telegram::sendMessage([
+        //             'chat_id' => $chatId,
+        //             'text' => 'Вы написали: ' . $text,
+        //         ]);
+        //     }
+        // }
+        if ($message === '/start') {
+            Telegram::sendMessage([
+                'chat_id' => $chat,
+                'text' => 'Добрый день, чем можем помочь?',
+                'parse_mode' => 'HTML'
+            ]);
         }
-
-        return response()->json(['success' => true]);
     }
 
     public function setWebhook()

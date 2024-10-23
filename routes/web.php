@@ -17,8 +17,6 @@ use App\Http\Controllers\TelegramController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => 'telegram/webhook'], function () {
-    Route::post('/', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook');
-    Route::get('/set', [TelegramController::class, 'setWebhook']);
-});
 
+Route::post('/telegram/webhook', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook');
+Route::get('/webhook/set', [TelegramController::class, 'setWebhook']);
