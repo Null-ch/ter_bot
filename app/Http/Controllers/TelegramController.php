@@ -29,23 +29,15 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
-        Log::info('Получено сообщение:');
-        // Проверяем, содержит ли обновление сообщение
         if ($update->getMessage()) {
-            // Получаем ID чата
             $chatId = $update->getMessage()->getChat()->getId();
-            // Получаем текст сообщения
             $text = $update->getMessage()->getText();
-            Log::info('Получено сообщение:', ['chat_id' => $chatId, 'text' => $text]);
-            // Обработка сообщения
             if ($text === '/start') {
-                // Отправка приветственного сообщения
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Привет! Я ваш Telegram-бот.',
                 ]);
             } else {
-                // Обработка других сообщений
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Вы написали: ' . $text,

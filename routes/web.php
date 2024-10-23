@@ -13,10 +13,3 @@ use App\Http\Controllers\TelegramController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Route::post('/webhook', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook');
-// Route::get('/webhook/set', [TelegramController::class, 'setWebhook']);
