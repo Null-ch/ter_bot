@@ -48,10 +48,9 @@ class TelegramController extends Controller
             $groupName = $chat->getTitle();
             $lastMessageTime = session("last_message_$userId", 0);
             if (time() - $lastMessageTime >= 60) {
-                Telegram::forwardMessage([
+                Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
-                    'from_chat_id' => $chatId,
-                    'message_id' => $update->getMessage()->getMessageId()
+                    'text' => $text . "\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 session(["last_message_$userId" => time()]);
             }
