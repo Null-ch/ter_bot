@@ -32,10 +32,24 @@ class TelegramController extends Controller
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $text = $update->getMessage()->getText();
+            $keyboard = [
+                [
+                    ['text' => 'Подать заявку!', 'callback_data' => 'apply']
+                ]
+            ];
+
             if ($text === '/start') {
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Привет! Я ваш Telegram-бот.',
+                    'text' => 'Привет! С помощью меня можно создать заявку ',
+                    'reply_markup' => [
+                        'inline_keyboard' => $keyboard
+                    ]
+                ]);
+            } elseif ($text === 'Подать заявку!') {
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Спасибо за подачу заявки!',
                 ]);
             } else {
                 Telegram::sendMessage([
