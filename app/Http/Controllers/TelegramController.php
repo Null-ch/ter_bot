@@ -61,7 +61,6 @@ class TelegramController extends Controller
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
                     'text' => $text . "\n Ник в ТГ: {$nick}\n*Пользователь: {$username}",
-                    'parse_mode' => 'Markdown'
                 ]);
             }
         }
