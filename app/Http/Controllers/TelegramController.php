@@ -29,6 +29,7 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
+        dd($update);
         Log::info('Получено сообщение:');
         // Проверяем, содержит ли обновление сообщение
         if ($update->getMessage()) {
@@ -53,6 +54,6 @@ class TelegramController extends Controller
             }
         }
 
-        return response()->json(['status' => 'success']);
+        return;
     }
 }
