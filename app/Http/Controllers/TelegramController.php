@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -46,14 +48,23 @@ class TelegramController extends Controller
             $username = $user->getFirstName() . $user->getLastName();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
-            $lastMessageTime = session("last_message_$userId", 0);
 
-            if (time() - $lastMessageTime >= 600) {
+            $lastMessage = Message::where('user_tg', $userId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+                return;
+            } else {
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                ];
+                Message::create($message);
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}" . $lastMessageTime,
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
-                session(["last_message_$userId" => time()]);
             }
 
             // if ($text === '/start') {
