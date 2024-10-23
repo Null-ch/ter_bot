@@ -33,14 +33,10 @@ return [
     */
     'bots' => [
         'mybot' => [
-            'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'),
-            'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'APP_URL'),
-            'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
-            /*
-             * @see https://core.telegram.org/bots/api#update
-             */
-            'allowed_updates' => null,
-            'commands' => [
+            'token'               => env('TELEGRAM_BOT_TOKEN'),
+            'certificate_path'    => env('TELEGRAM_CERTIFICATE_PATH'),
+            'webhook_url'         => env('TELEGRAM_WEBHOOK_URL'),
+            'commands'            => [
                 //Acme\Project\Commands\MyTelegramBot\BotCommand::class
             ],
         ],
@@ -212,6 +208,6 @@ return [
     |
     */
     'shared_commands' => [
-        'start' => StartCommand::class,
+        // 'start' => StartCommand::class,
     ],
 ];
