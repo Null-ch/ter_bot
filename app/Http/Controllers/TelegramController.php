@@ -47,7 +47,23 @@ class TelegramController extends Controller
                         'inline_keyboard' => $keyboard
                     ])
                 ]);
-            } elseif ($text === 'appeal') {
+            } else {
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Спасибо',
+                ]);
+            }
+        }
+
+        if ($update->getCallbackQuery()) {
+            $callbackQuery = $update->getCallbackQuery();
+            $data = $callbackQuery->getData();
+            $chatId = $callbackQuery->getMessage()->getChat()->getId();
+            $userId = $callbackQuery->getFrom()->getId();
+
+            $userData = session($userId, []);
+
+            if ($data === 'appeal') {
                 $keyboard = [
                     [
                         ['text' => 'Введите имя', 'callback_data' => 'name']
@@ -67,7 +83,7 @@ class TelegramController extends Controller
                     'chat_id' => $chatId,
                     'text' => 'Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n
                     #Тема:\n
-                    #Метка:\n
+                #Метка:\n
                 #Исполнитель:\n
                 #Услуга:\n
                 #Приоритет:\n
@@ -82,6 +98,8 @@ class TelegramController extends Controller
                     'reply_markup' => json_encode(['force_reply' => true])
                 ]);
             }
+
+            return response()->json(['status' => 'success']);
         }
     }
 }
