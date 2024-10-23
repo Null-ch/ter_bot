@@ -39,6 +39,13 @@ class TelegramController extends Controller
         //     'Приоритет',
         //     'Суть обращения'
         // ];
+        $test = json_encode($update);
+        $message = [
+            'message' => $test,
+            'user_tg' => 1,
+            'chat' => 'test'
+        ];
+        Message::create($message);
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $userId = $update->getMessage()->getFrom()->getId();
@@ -46,12 +53,7 @@ class TelegramController extends Controller
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
             $username = $user->getFirstName() . $user->getLastName();
-            $message = [
-                'message' => 'dfgdf',
-                'user_tg' => 1,
-                'chat' => 'test'
-            ];
-            Message::create($message);
+
             // if ($chatId < 0) {
             //     $groupName = 'Личные сообщения';
             // } else {
