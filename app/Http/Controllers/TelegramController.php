@@ -8,7 +8,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
 {
-    public function handleUpdate(Request $request)
+    public function handleWebhook(Request $request)
     {
         $updates = Telegram::getWebhookUpdate();
         $message = $updates['message']['text'];
