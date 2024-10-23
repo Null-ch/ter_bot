@@ -69,7 +69,7 @@ class TelegramController extends Controller
                 ]);
             }
         }
-
+    
         if ($update->getCallbackQuery()) {
             $callbackQuery = $update->getCallbackQuery();
             $data = $callbackQuery->getData();
