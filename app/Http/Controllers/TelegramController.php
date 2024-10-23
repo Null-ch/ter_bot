@@ -31,13 +31,13 @@ class TelegramController extends Controller
         //         ]);
         //     }
         // }
-        if ($message === '/start') {
+        // if ($message === '/start') {
             Telegram::sendMessage([
                 'chat_id' => $chat,
-                'text' => 'Добрый день, чем можем помочь?',
+                'text' => $message,
                 'parse_mode' => 'HTML'
             ]);
-        }
+        // }
     }
 
     public function setWebhook()
