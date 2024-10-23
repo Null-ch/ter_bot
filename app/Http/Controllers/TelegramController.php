@@ -29,9 +29,20 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
+        $list = [
+            '#Тема',
+            '#Метка',
+            '#Исполнитель',
+            '#Услуга',
+            '#Приоритет',
+            '#Суть_обращения'
+        ];
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $text = $update->getMessage()->getText();
+            $user = $update->getMessage()->getFrom();
+            $nick = $user->getUsername();
+            $username = $user->getFirstName() . $user->getLastName();
 
             if ($text === '/start') {
                 $keyboard = [
@@ -46,10 +57,11 @@ class TelegramController extends Controller
                         'inline_keyboard' => $keyboard
                     ])
                 ]);
-            } else {
+            } elseif ($this->checkAllWordsPresent($text, $list)) {
+
                 Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => $chatId,
+                    'chat_id' => '-1002384608890',
+                    'text' => $text . "Ник в ТГ: {$nick} Пользователь: {$username}",
                 ]);
             }
         }
@@ -61,14 +73,6 @@ class TelegramController extends Controller
             $userId = $callbackQuery->getFrom()->getId();
 
             if ($data === 'appeal') {
-                $list = [
-                    '#Тема',
-                    '#Метка',
-                    '#Исполнитель',
-                    '#Услуга',
-                    '#Приоритет',
-                    '#Суть_обращения'
-                ];
                 $telegramMessage = "Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n\n" . implode("\n", $list);
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
@@ -78,5 +82,19 @@ class TelegramController extends Controller
 
             return response()->json(['status' => 'success']);
         }
+    }
+    function checkAllWordsPresent($text, $wordsList) {
+        $words = explode(' ', strtolower($text));
+        $words = array_map(function($word) {
+            return preg_replace('/[^\w\s]/', '', $word);
+        }, $words);
+
+        foreach ($wordsList as $word) {
+            if (!in_array(strtolower($word), $words)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
