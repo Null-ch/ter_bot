@@ -46,8 +46,7 @@ class TelegramController extends Controller
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
             $username = $user->getFirstName() . $user->getLastName();
-            $chat = Telegram::getChat(['chat_id' => $chatId]);
-            $groupName = $chat->getTitle();
+            $groupName = Telegram::getChat(['chat_id' => $chatId])->getTitle();
 
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
@@ -60,7 +59,7 @@ class TelegramController extends Controller
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
-                    'chat' => $chat
+                    'chat' => $groupName
                 ];
                 Message::create($message);
                 Telegram::sendMessage([
