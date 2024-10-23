@@ -50,7 +50,7 @@ class TelegramController extends Controller
             if (time() - $lastMessageTime >= 60) {
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
-                    'text' => $text . "\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 session(["last_message_$userId" => time()]);
             }
