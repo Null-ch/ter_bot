@@ -42,9 +42,9 @@ class TelegramController extends Controller
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Привет! С помощью меня можно создать заявку ',
-                    'reply_markup' => [
+                    'reply_markup' => json_encode([
                         'inline_keyboard' => $keyboard
-                    ]
+                    ])
                 ]);
             } elseif ($text === 'Подать заявку!') {
                 Telegram::sendMessage([
