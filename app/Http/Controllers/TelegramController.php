@@ -68,9 +68,7 @@ class TelegramController extends Controller
 
                 Message::create($message);
             }
-        }
-
-        if ($update->getMessage()) {
+        } elseif ($update->getMessage()) {
 
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
