@@ -63,10 +63,10 @@ class TelegramController extends Controller
                 ];
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
+                    'text' => 'Спасибо за подачу заявки!',
                     'reply_markup' => json_encode([
                         'inline_keyboard' => $keyboard
-                    ]),
-                    'text' => 'Спасибо за подачу заявки!',
+                    ])
                 ]);
             } else {
                 Telegram::sendMessage([
