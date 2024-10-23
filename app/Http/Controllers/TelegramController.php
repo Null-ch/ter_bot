@@ -91,8 +91,7 @@ class TelegramController extends Controller
                 $name = $userData['name'] ?? '';
                 $email = $userData['email'] ?? '';
                 $message = $userData['message'] ?? '';
-
-
+                Log::info(json_encode($userData));
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Спасибо за обратную связь!',
