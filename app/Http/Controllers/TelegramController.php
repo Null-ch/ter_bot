@@ -66,16 +66,17 @@ class TelegramController extends Controller
                 ]);
             }
         } elseif ($update->getMessage()) {
-            // $chatId = $update->getMessage()->getChat()->getId();
+            $chatId = $update->getMessage()->getChat()->getId();
+            $chatType = $update->getMessage()->getChat()->getType();
             $userId = $update->getMessage()->getFrom()->getId();
-            // $text = $update->getMessage()->getText();
-            // $user = $update->getMessage()->getFrom();
-            // $nick = $user->getUsername();
-            // $username = $user->getFirstName() . $user->getLastName();
+            $text = $update->getMessage()->getText();
+            $user = $update->getMessage()->getFrom();
+            $nick = $user->getUsername();
+            $username = $user->getFirstName() . $user->getLastName();
             $message = [
                 'message' => $update,
                 'user_tg' => $userId,
-                'chat' => 'test'
+                'chat' => $chatType
             ];
             Message::create($message);
             // $lastMessage = Message::active()->where('user_tg', $userId)
