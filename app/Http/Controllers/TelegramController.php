@@ -46,31 +46,37 @@ class TelegramController extends Controller
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
             $username = $user->getFirstName() . $user->getLastName();
-            if ($chatId < 0) {
-                $groupName = 'Личные сообщения';
-            } else {
-                $groupName = Telegram::getChat(['chat_id' => $chatId])->getTitle();
-            }
+            $message = [
+                'message' => $text,
+                'user_tg' => $userId,
+                'chat' => 'test'
+            ];
+            Message::create($message);
+            // if ($chatId < 0) {
+            //     $groupName = 'Личные сообщения';
+            // } else {
+            //     $groupName = Telegram::getChat(['chat_id' => $chatId])->getTitle();
+            // }
 
-            $lastMessage = Message::active()->where('user_tg', $userId)
-                ->where('chat', $groupName)
-                ->orderBy('created_at', 'desc')
-                ->first();
+            // $lastMessage = Message::active()->where('user_tg', $userId)
+            //     ->where('chat', $groupName)
+            //     ->orderBy('created_at', 'desc')
+            //     ->first();
 
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
-                return;
-            } else {
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'chat' => $groupName
-                ];
-                Message::create($message);
+            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+            //     return;
+            // } else {
+            //     $message = [
+            //         'message' => $text,
+            //         'user_tg' => $userId,
+            //         'chat' => $groupName
+            //     ];
+            //     Message::create($message);
                 // Telegram::sendMessage([
                 //     'chat_id' => '-1002384608890',
                 //     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 // ]);
-            }
+            // }
 
             // if ($text === '/start') {
             //     $keyboard = [
