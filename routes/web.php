@@ -14,4 +14,7 @@ use App\Http\Controllers\TelegramController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::post('/telegram', [TelegramController::class, 'handleUpdate']);
