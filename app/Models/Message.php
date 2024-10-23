@@ -19,6 +19,8 @@ class Message extends Model
         'user_tg',
         'chat',
         'client',
+        'message_id',
+        'destination_point',
         'performer',
     ];
 

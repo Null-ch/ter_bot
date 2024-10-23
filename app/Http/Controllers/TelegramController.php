@@ -31,6 +31,8 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
+        $appealsChat = Telegram::getChat(['chat_id' => '-1002384608890']);
+        $appealsChatTitle = $appealsChat->getUsername();
         $admins = [
             '6899147031',
             '6256784114',
@@ -38,12 +40,6 @@ class TelegramController extends Controller
             '395590080',
         ];
         if (isset($update['business_message']) && isset($update['business_message']['text'])) {
-            $test = json_encode($update['business_message']);
-            Telegram::sendMessage([
-                'chat_id' => '-1002384608890',
-                'text' => $test
-                // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            ]);
             $userId = $update['business_message']['from']['id'];
             if (in_array($userId, $admins)) {
                 return;
@@ -59,17 +55,21 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
+                $response = Telegram::sendMessage([
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+                $messageId = $response->getMessageId();
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
                     'client' => $username,
+                    'message_id' => $messageId,
+                    'destination_point' => $appealsChatTitle,
                     'chat' => $groupName
                 ];
+
                 Message::create($message);
-                Telegram::sendMessage([
-                    'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                ]);
             }
         }
 
@@ -79,12 +79,6 @@ class TelegramController extends Controller
             if (in_array($userId, $admins) || $text == '/start') {
                 return;
             }
-            $test = json_encode($update);
-            Telegram::sendMessage([
-                'chat_id' => '-1002384608890',
-                'text' => $test
-                // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            ]);
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
@@ -103,17 +97,20 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
+                $response = Telegram::sendMessage([
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+                $messageId = $response->getMessageId();
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
                     'client' => $username,
+                    'message_id' => $messageId,
+                    'destination_point' => $appealsChatTitle,
                     'chat' => $groupName
                 ];
                 Message::create($message);
-                Telegram::sendMessage([
-                    'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                ]);
             }
         }
     }
