@@ -49,8 +49,8 @@ class TelegramController extends Controller
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
 
-            $lastMessage = Message::active()->where('user_tg', (string)$userId)
-                ->where('chat', (string)$chat)
+            $lastMessage = Message::active()->where('user_tg', $userId)
+                ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
