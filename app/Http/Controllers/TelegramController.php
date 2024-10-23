@@ -49,10 +49,10 @@ class TelegramController extends Controller
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
 
-            $lastMessage = Message::where('user_tg', $userId)
-            ->where('chat', $chat)
-            ->orderBy('created_at', 'desc')
-            ->first();
+            $lastMessage = Message::active()->where('user_tg', $userId)
+                ->where('chat', $chat)
+                ->orderBy('created_at', 'desc')
+                ->first();
 
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
                 return;
@@ -117,7 +117,7 @@ class TelegramController extends Controller
     //             $result = false;
     //         }
     //     }
-        
+
     //     return $result;
     // }
 }

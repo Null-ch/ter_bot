@@ -23,4 +23,9 @@ class Message extends Model
 
     protected $table = 'messages';
     protected $guarded = false;
+
+    public function scopeActive($query)
+    {
+        return $query->whereNull('deleted_at');
+    }
 }
