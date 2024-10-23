@@ -64,10 +64,18 @@ class TelegramController extends Controller
             $userData = session($userId, []);
 
             if ($data === 'appeal') {
-                $list = "#Тема\n#Метка\n#Исполнитель\n#Услуга\n#Приоритет\n#Суть обращения"; 
+                $list = [
+                    '#Тема',
+                    '#Метка',
+                    '#Исполнитель',
+                    '#Услуга',
+                    '#Приоритет',
+                    '#Суть обращения'
+                ];
+                $telegramMessage = "Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n\n" . implode("\n", $list);
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Пожалуйста, заполните форму обратной связи, используя следующие префиксы: #Тема\n#Метка\n#Исполнитель\n#Услуга\n#Приоритет\n#Суть обращения' . json_encode($list,JSON_UNESCAPED_UNICODE),
+                    'text' => $telegramMessage
                 ]);
             }
 
