@@ -61,14 +61,14 @@ class TelegramController extends Controller
         }
 
         if ($update->getMessage()) {
-            $chatId = $update->getMessage()->getChat()->getId();
+            $userId = $update->getMessage()->getFrom()->getId();
             if ($userId == '395590080') {
                 return;
             }
+            $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
             $chatType = $update->getMessage()->getChat()->getType();
-            $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
