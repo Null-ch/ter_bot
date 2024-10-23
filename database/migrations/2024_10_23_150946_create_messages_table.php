@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('chat')->nullable();
             $table->string('client');
             $table->string('message_id');
-            $table->string('destination_point');
             $table->string('performer')->nullable();
             $table->softDeletes();
             $table->timestamps();

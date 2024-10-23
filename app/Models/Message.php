@@ -20,7 +20,6 @@ class Message extends Model
         'chat',
         'client',
         'message_id',
-        'destination_point',
         'performer',
     ];
 

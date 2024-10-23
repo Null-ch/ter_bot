@@ -31,8 +31,6 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
-        $appealsChat = Telegram::getChat(['chat_id' => '-1002384608890']);
-        $appealsChatTitle = $appealsChat->getUsername();
         $admins = [
             '6899147031',
             '6256784114',
@@ -65,7 +63,6 @@ class TelegramController extends Controller
                     'user_tg' => $userId,
                     'client' => $username,
                     'message_id' => $messageId,
-                    'destination_point' => $appealsChatTitle,
                     'chat' => $groupName
                 ];
 
@@ -97,7 +94,7 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
-                $response = Telegram::sendMessage([
+                                $response = Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
@@ -107,9 +104,9 @@ class TelegramController extends Controller
                     'user_tg' => $userId,
                     'client' => $username,
                     'message_id' => $messageId,
-                    'destination_point' => $appealsChatTitle,
                     'chat' => $groupName
                 ];
+
                 Message::create($message);
             }
         }
