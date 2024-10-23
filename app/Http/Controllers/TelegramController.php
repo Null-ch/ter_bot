@@ -50,6 +50,7 @@ class TelegramController extends Controller
             $groupName = $chat->getTitle();
 
             $lastMessage = Message::where('user_tg', $userId)
+            ->where('chat', $chat)
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -59,6 +60,7 @@ class TelegramController extends Controller
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
+                    'chat' => $chat
                 ];
                 Message::create($message);
                 Telegram::sendMessage([
