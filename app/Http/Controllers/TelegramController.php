@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
@@ -27,14 +28,15 @@ class TelegramController extends Controller
     }
     public function handleWebhook(Request $request)
     {
-        $update = Telegram::getWebhookUpdate();
+        $update = Telegram::getWebhookUpdates();
+        Log::info('Получено сообщение:');
         // Проверяем, содержит ли обновление сообщение
         if ($update->getMessage()) {
             // Получаем ID чата
             $chatId = $update->getMessage()->getChat()->getId();
             // Получаем текст сообщения
             $text = $update->getMessage()->getText();
-
+            Log::info('Получено сообщение:', ['chat_id' => $chatId, 'text' => $text]);
             // Обработка сообщения
             if ($text === '/start') {
                 // Отправка приветственного сообщения
