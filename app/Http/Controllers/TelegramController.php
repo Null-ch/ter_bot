@@ -41,30 +41,31 @@ class TelegramController extends Controller
         // ];
 
         if (isset($update['business_message'])) {
-            $userId = $update['business_message']['from']['id'];
-            $nick = $update['business_message']['from']['username'];
-            $username = $update['business_message']['from']['first_name'];
-            $text = $update['business_message']['text'];
-            $groupName = 'Личные сообщения';
-            $lastMessage = Message::active()->where('user_tg', $userId)
-                ->where('chat', $groupName)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
-                return;
-            } else {
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'chat' => $groupName
-                ];
-                Message::create($message);
+            // $userId = $update['business_message']['from']['id'];
+            // $nick = $update['business_message']['from']['username'];
+            // $username = $update['business_message']['from']['first_name'];
+            // $text = $update['business_message']['text'];
+            // $groupName = 'Личные сообщения';
+            // $lastMessage = Message::active()->where('user_tg', $userId)
+            //     ->where('chat', $groupName)
+            //     ->orderBy('created_at', 'desc')
+            //     ->first();
+            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+            //     return;
+            // } else {
+                // $message = [
+                //     'message' => $text,
+                //     'user_tg' => $userId,
+                //     'chat' => $groupName
+                // ];
+                // Message::create($message);
                 Telegram::sendMessage([
                     // 'chat_id' => '-1002384608890',
                     'chat_id' => '395590080',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    'text' => json_encode($update['business_message'])
+                    // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
-            }
+            // }
         } elseif ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $chatType = $update->getMessage()->getChat()->getType();
