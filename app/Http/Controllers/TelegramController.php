@@ -136,7 +136,7 @@ class TelegramController extends Controller
         //     }
 
         //     return response()->json(['status' => 'success']);
-        // }
+        }
     }
     // function checkAllWordsPresent($text, $wordsList)
     // {
