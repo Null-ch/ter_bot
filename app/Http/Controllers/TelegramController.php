@@ -71,6 +71,7 @@ class TelegramController extends Controller
         }
 
         if ($update->getMessage()) {
+
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
             if (in_array($userId, $admins) || $text == '/start') {
@@ -78,6 +79,11 @@ class TelegramController extends Controller
             }
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
+            Telegram::sendMessage([
+                'chat_id' => '395590080',
+                'text' => $chatId,
+            ]);
+            return;
             $groupName = $chat->getTitle();
             if (!$groupName) {
                 $groupName = 'Личные сообщения';
@@ -94,7 +100,7 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
-                                $response = Telegram::sendMessage([
+                $response = Telegram::sendMessage([
                     'chat_id' => '395590080',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
