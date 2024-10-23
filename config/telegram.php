@@ -1,6 +1,7 @@
 <?php
 
 use Telegram\Bot\Commands\HelpCommand;
+use App\Services\TelegramCommands\StartCommand;
 
 return [
     /*
@@ -33,7 +34,7 @@ return [
     'bots' => [
         'mybot' => [
             'token' => env('TELEGRAM_BOT_TOKEN', 'YOUR-BOT-TOKEN'),
-            'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
+            'certificate_path' => env('TELEGRAM_CERTIFICATE_PATH', 'APP_URL'),
             'webhook_url' => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             /*
              * @see https://core.telegram.org/bots/api#update
@@ -211,8 +212,6 @@ return [
     |
     */
     'shared_commands' => [
-        // 'start' => Acme\Project\Commands\StartCommand::class,
-        // 'stop' => Acme\Project\Commands\StopCommand::class,
-        // 'status' => Acme\Project\Commands\StatusCommand::class,
+        'start' => StartCommand::class,
     ],
 ];
