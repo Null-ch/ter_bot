@@ -79,7 +79,7 @@ class TelegramController extends Controller
             if (in_array($userId, $admins) || $text == '/start') {
                 return;
             }
-            $test = json_encode($text);
+            $test = json_encode($update);
             Telegram::sendMessage([
                 'chat_id' => '-1002384608890',
                 'text' => $test
