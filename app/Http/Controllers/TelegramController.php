@@ -77,7 +77,7 @@ class TelegramController extends Controller
             $text = $update->getMessage()->getText();
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
-            $username = $user->getFirstName() . $user->getLastName();
+            $username = $user->getFirstName() . " " . $user->getLastName();
 
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
