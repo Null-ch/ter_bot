@@ -32,7 +32,6 @@ class TelegramController extends Controller
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $text = $update->getMessage()->getText();
-            $userId = $update->getMessage()->getFrom()->getId();
 
             if ($text === '/start') {
                 $keyboard = [
@@ -50,7 +49,7 @@ class TelegramController extends Controller
             } else {
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Спасибо',
+                    'text' => $chatId,
                 ]);
             }
         }
@@ -61,8 +60,6 @@ class TelegramController extends Controller
             $chatId = $callbackQuery->getMessage()->getChat()->getId();
             $userId = $callbackQuery->getFrom()->getId();
 
-            $userData = session($userId, []);
-
             if ($data === 'appeal') {
                 $list = [
                     '#Тема',
@@ -70,7 +67,7 @@ class TelegramController extends Controller
                     '#Исполнитель',
                     '#Услуга',
                     '#Приоритет',
-                    '#Суть обращения'
+                    '#Суть_обращения'
                 ];
                 $telegramMessage = "Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n\n" . implode("\n", $list);
                 Telegram::sendMessage([
