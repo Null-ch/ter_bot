@@ -31,10 +31,15 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
-
+        $admins = [
+            '6899147031',
+            '6256784114',
+            '6960195534',
+            '395590080',
+        ];
         if (isset($update['business_message']) && isset($update['business_message']['text'])) {
             $userId = $update['business_message']['from']['id'];
-            if ($userId == '395590080') {
+            if (in_array($userId, $admins)) {
                 return;
             }
             $nick = $update['business_message']['from']['username'];
@@ -56,8 +61,7 @@ class TelegramController extends Controller
                 ];
                 Message::create($message);
                 Telegram::sendMessage([
-                    // 'chat_id' => '-1002384608890',
-                    'chat_id' => '395590080',
+                    'chat_id' => '-1002384608890',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
             }
@@ -71,7 +75,6 @@ class TelegramController extends Controller
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
-            $chatType = $update->getMessage()->getChat()->getType();
             $text = $update->getMessage()->getText();
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
@@ -97,8 +100,7 @@ class TelegramController extends Controller
                 ];
                 Message::create($message);
                 Telegram::sendMessage([
-                    // 'chat_id' => '-1002384608890',
-                    'chat_id' => '395590080',
+                    'chat_id' => '-1002384608890',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
             }
