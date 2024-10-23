@@ -39,7 +39,7 @@ class TelegramController extends Controller
         //     'Приоритет',
         //     'Суть обращения'
         // ];
-        Log::info($update);
+
         if (isset($update['business_message'])) {
             $userId = $update['business_message']['from']['id'];
             $nick = $update['business_message']['from']['username'];
@@ -67,7 +67,7 @@ class TelegramController extends Controller
             }
         } elseif ($update->getMessage()) {
             // $chatId = $update->getMessage()->getChat()->getId();
-            // $userId = $update->getMessage()->getFrom()->getId();
+            $userId = $update->getMessage()->getFrom()->getId();
             // $text = $update->getMessage()->getText();
             // $user = $update->getMessage()->getFrom();
             // $nick = $user->getUsername();
@@ -136,7 +136,7 @@ class TelegramController extends Controller
 
         //     return response()->json(['status' => 'success']);
         // }
-    }
+    // }
     // function checkAllWordsPresent($text, $wordsList) {
     //     $formattedText = strtolower($text);
     //     $result = true;
