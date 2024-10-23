@@ -66,10 +66,10 @@ class TelegramController extends Controller
                     'chat' => $groupName
                 ];
                 Message::create($message);
-                Telegram::sendMessage([
-                    'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                ]);
+                // Telegram::sendMessage([
+                //     'chat_id' => '-1002384608890',
+                //     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                // ]);
             }
 
             // if ($text === '/start') {
