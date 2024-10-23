@@ -27,17 +27,30 @@ class TelegramController extends Controller
     }
     public function handleWebhook(Request $request)
     {
-        $updates = Telegram::getWebhookUpdate();
-        $message = $updates['message']['text'];
-        $chat = $updates['message']['chat']['id'];
+        $update = Telegram::getWebhookUpdate();
+        // Проверяем, содержит ли обновление сообщение
+        if ($update->getMessage()) {
+            // Получаем ID чата
+            $chatId = $update->getMessage()->getChat()->getId();
+            // Получаем текст сообщения
+            $text = $update->getMessage()->getText();
 
-        if ($message === '/start') {
-            Telegram::sendMessage([
-                'chat_id' => $chat,
-                'text' => 'Добрый день, чем можем помочь?',
-                'parse_mode' => 'HTML'
-            ]);
-            return;
+            // Обработка сообщения
+            if ($text === '/start') {
+                // Отправка приветственного сообщения
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Привет! Я ваш Telegram-бот.',
+                ]);
+            } else {
+                // Обработка других сообщений
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Вы написали: ' . $text,
+                ]);
+            }
         }
+
+        return response()->json(['status' => 'success']);
     }
 }
