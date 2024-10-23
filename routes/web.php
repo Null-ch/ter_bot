@@ -18,5 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/webhook', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook')->middleware(['web', 'except:webhook']);;
+Route::post('/webhook', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook')->middleware(['web', 'except:web']);
 Route::get('/webhook/set', [TelegramController::class, 'setWebhook']);
