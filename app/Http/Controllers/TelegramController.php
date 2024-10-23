@@ -67,7 +67,7 @@ class TelegramController extends Controller
                 $list = "#Тема\n#Метка\n#Исполнитель\n#Услуга\n#Приоритет\n#Суть обращения"; 
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Пожалуйста, заполните форму обратной связи, используя следующие префиксы:' . json_encode($list),
+                    'text' => 'Пожалуйста, заполните форму обратной связи, используя следующие префиксы: #Тема\n#Метка\n#Исполнитель\n#Услуга\n#Приоритет\n#Суть обращения' . json_encode($list,JSON_UNESCAPED_UNICODE),
                 ]);
             }
 
