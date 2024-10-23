@@ -46,11 +46,11 @@ class TelegramController extends Controller
             $username = $user->getFirstName() . $user->getLastName();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
-            $lastMessageTime = session("last_message_$userId", 0);
-            if (time() - $lastMessageTime >= 60) {
+            $lastMessageTime = session("last_message_$userId");
+            if (time() - $lastMessageTime >= 600) {
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}" . $lastMessageTime,
                 ]);
                 session(["last_message_$userId" => time()]);
             }
