@@ -29,14 +29,14 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
-        $list = [
-            'Тема',
-            'Метка',
-            'Исполнитель',
-            'Услуга',
-            'Приоритет',
-            'Суть обращения'
-        ];
+        // $list = [
+        //     'Тема',
+        //     'Метка',
+        //     'Исполнитель',
+        //     'Услуга',
+        //     'Приоритет',
+        //     'Суть обращения'
+        // ];
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $userId = $update->getMessage()->getFrom()->getId();
@@ -46,7 +46,8 @@ class TelegramController extends Controller
             $username = $user->getFirstName() . $user->getLastName();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
-            $lastMessageTime = session("last_message_$userId");
+            $lastMessageTime = session("last_message_$userId", 0);
+
             if (time() - $lastMessageTime >= 600) {
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
