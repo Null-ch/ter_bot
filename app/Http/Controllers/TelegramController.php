@@ -50,23 +50,26 @@ class TelegramController extends Controller
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
                 ->first();
-            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
-            //     return;
-            // } else {
-            $message = [
-                'message' => $text,
-                'user_tg' => $userId,
-                'chat' => $groupName
-            ];
-            Message::create($message);
-            Telegram::sendMessage([
-                // 'chat_id' => '-1002384608890',
-                'chat_id' => '395590080',
-                'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            ]);
-            // }
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+                return;
+            } else {
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'client' => $username,
+                    'chat' => $groupName
+                ];
+                Message::create($message);
+                Telegram::sendMessage([
+                    // 'chat_id' => '-1002384608890',
+                    'chat_id' => '395590080',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+            }
         } elseif ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
+            $chat = Telegram::getChat(['chat_id' => $chatId]);
+            $groupName = $chat->getTitle();
             $chatType = $update->getMessage()->getChat()->getType();
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
@@ -76,6 +79,7 @@ class TelegramController extends Controller
             $message = [
                 'message' => $update,
                 'user_tg' => $userId,
+                'client' => $username,
                 'chat' => $chatType
             ];
             Message::create($message);
@@ -100,42 +104,42 @@ class TelegramController extends Controller
                 ]);
             }
 
-        //     if ($text === '/start') {
-        //         $keyboard = [
-        //             [
-        //                 ['text' => 'Подать заявку!', 'callback_data' => 'appeal']
-        //             ]
-        //         ];
-        //         Telegram::sendMessage([
-        //             'chat_id' => $chatId,
-        //             'text' => 'Привет! С помощью меня можно создать заявку',
-        //             'reply_markup' => json_encode([
-        //                 'inline_keyboard' => $keyboard
-        //             ])
-        //         ]);
-        //     } elseif ($this->checkAllWordsPresent($text, $list)) {
-        //         Telegram::sendMessage([
-        //             'chat_id' => '-1002384608890',
-        //             'text' => $text . "\n Ник в ТГ: @{$nick}\n Пользователь: {$username}",
-        //         ]);
-        //     }
-        // }
+            //     if ($text === '/start') {
+            //         $keyboard = [
+            //             [
+            //                 ['text' => 'Подать заявку!', 'callback_data' => 'appeal']
+            //             ]
+            //         ];
+            //         Telegram::sendMessage([
+            //             'chat_id' => $chatId,
+            //             'text' => 'Привет! С помощью меня можно создать заявку',
+            //             'reply_markup' => json_encode([
+            //                 'inline_keyboard' => $keyboard
+            //             ])
+            //         ]);
+            //     } elseif ($this->checkAllWordsPresent($text, $list)) {
+            //         Telegram::sendMessage([
+            //             'chat_id' => '-1002384608890',
+            //             'text' => $text . "\n Ник в ТГ: @{$nick}\n Пользователь: {$username}",
+            //         ]);
+            //     }
+            // }
 
-        // if ($update->getCallbackQuery()) {
-        //     $callbackQuery = $update->getCallbackQuery();
-        //     $data = $callbackQuery->getData();
-        //     $chatId = $callbackQuery->getMessage()->getChat()->getId();
-        //     $userId = $callbackQuery->getFrom()->getId();
+            // if ($update->getCallbackQuery()) {
+            //     $callbackQuery = $update->getCallbackQuery();
+            //     $data = $callbackQuery->getData();
+            //     $chatId = $callbackQuery->getMessage()->getChat()->getId();
+            //     $userId = $callbackQuery->getFrom()->getId();
 
-        //     if ($data === 'appeal') {
-        //         $telegramMessage = "Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n\n" . implode("\n", $list);
-        //         Telegram::sendMessage([
-        //             'chat_id' => $chatId,
-        //             'text' => $telegramMessage
-        //         ]);
-        //     }
+            //     if ($data === 'appeal') {
+            //         $telegramMessage = "Пожалуйста, заполните форму обратной связи, используя следующие префиксы:\n\n" . implode("\n", $list);
+            //         Telegram::sendMessage([
+            //             'chat_id' => $chatId,
+            //             'text' => $telegramMessage
+            //         ]);
+            //     }
 
-        //     return response()->json(['status' => 'success']);
+            //     return response()->json(['status' => 'success']);
         }
     }
     // function checkAllWordsPresent($text, $wordsList)

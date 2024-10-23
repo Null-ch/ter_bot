@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('message');
             $table->string('user_tg');
             $table->string('chat')->nullable();
+            $table->string('client');
             $table->string('performer')->nullable();
             $table->softDeletes();
             $table->timestamps();
