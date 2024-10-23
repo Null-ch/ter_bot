@@ -41,7 +41,7 @@ class TelegramController extends Controller
                 ];
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Привет! С помощью меня можно создать заявку ',
+                    'text' => 'Привет! С помощью меня можно создать заявку',
                     'reply_markup' => json_encode([
                         'inline_keyboard' => $keyboard
                     ])
@@ -63,7 +63,7 @@ class TelegramController extends Controller
                 ];
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'Спасибо за подачу заявки!',
+                    // 'text' => 'Спасибо за подачу заявки!',
                     'reply_markup' => json_encode([
                         'inline_keyboard' => $keyboard
                     ])
