@@ -83,17 +83,16 @@ class TelegramController extends Controller
         }
     }
     function checkAllWordsPresent($text, $wordsList) {
-        // $words = explode(' ', strtolower($text));
-        // $words = array_map(function($word) {
-        //     return preg_replace('/[^\w\s]/', '', $word);
-        // }, $words);
-
-        // foreach ($wordsList as $word) {
-        //     if (!in_array(strtolower($word), $words)) {
-        //         return false;
-        //     }
-        // }
+        $formattedText = strtolower($text);
+        $result = true;
+        foreach ($wordsList as $word) {
+            if (strpos($formattedText, strtolower($word)) !== false) {
+                $result = true;
+            } else {
+                $result = false;
+            }
+        }
         
-        return true;
+        return $result;
     }
 }
