@@ -32,13 +32,13 @@ class TelegramController extends Controller
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $text = $update->getMessage()->getText();
-            $keyboard = [
-                [
-                    ['text' => 'Подать заявку!', 'callback_data' => 'apply']
-                ]
-            ];
 
             if ($text === '/start') {
+                $keyboard = [
+                    [
+                        ['text' => 'Подать заявку!', 'callback_data' => 'apply']
+                    ]
+                ];
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Привет! С помощью меня можно создать заявку ',
@@ -47,8 +47,25 @@ class TelegramController extends Controller
                     ])
                 ]);
             } elseif ($text === 'Подать заявку!') {
+                $keyboard = [
+                    [
+                        ['text' => 'Введите имя', 'callback_data' => 'name']
+                    ],
+                    [
+                        ['text' => 'Введите email', 'callback_data' => 'email']
+                    ],
+                    [
+                        ['text' => 'Введите сообщение', 'callback_data' => 'message']
+                    ],
+                    [
+                        ['text' => 'Отправить', 'callback_data' => 'send']
+                    ]
+                ];
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
+                    'reply_markup' => json_encode([
+                        'inline_keyboard' => $keyboard
+                    ]),
                     'text' => 'Спасибо за подачу заявки!',
                 ]);
             } else {
