@@ -61,17 +61,8 @@ class TelegramController extends Controller
         }
 
         if ($update->getMessage()) {
-            $tres = json_encode($update);
-            Telegram::sendMessage([
-                // 'chat_id' => '-1002384608890',
-                'chat_id' => '395590080',
-                'text' => $tres,
-                // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            ]);
-            return;
-            $botInfo = Telegram::getMe();
             $chatId = $update->getMessage()->getChat()->getId();
-            if ($chatId == $botInfo->getId()) {
+            if ($userId == '395590080') {
                 return;
             }
             $chat = Telegram::getChat(['chat_id' => $chatId]);
