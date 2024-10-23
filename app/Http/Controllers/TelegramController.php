@@ -66,7 +66,8 @@ class TelegramController extends Controller
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
             }
-        } elseif ($update->getMessage()) {
+        }
+        if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
