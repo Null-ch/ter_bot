@@ -75,6 +75,9 @@ class TelegramController extends Controller
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $groupName = $chat->getTitle();
+            if (!$groupName) {
+                $groupName = 'Личные сообщения';
+            }
             $text = $update->getMessage()->getText();
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
@@ -88,10 +91,6 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
                 return;
             } else {
-                if (!$groupName) {
-                    $groupName = 'Личные сообщения';
-                }
-
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
