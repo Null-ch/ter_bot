@@ -54,7 +54,7 @@ class TelegramController extends Controller
                 return;
             } else {
                 $response = Telegram::sendMessage([
-                    'chat_id' => '395590080',
+                    'chat_id' => '-1002384608890',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
@@ -79,11 +79,6 @@ class TelegramController extends Controller
             }
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
-            Telegram::sendMessage([
-                'chat_id' => '395590080',
-                'text' => $chatId,
-            ]);
-            return;
             $groupName = $chat->getTitle();
             if (!$groupName) {
                 $groupName = 'Личные сообщения';
@@ -101,7 +96,7 @@ class TelegramController extends Controller
                 return;
             } else {
                 $response = Telegram::sendMessage([
-                    'chat_id' => '395590080',
+                    'chat_id' => '-1002384608890',
                     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
