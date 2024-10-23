@@ -48,7 +48,7 @@ class TelegramController extends Controller
             $username = $user->getFirstName() . $user->getLastName();
             $message = [
                 'message' => $text,
-                'user_tg' => $userId,
+                'user_tg' => 1,
                 'chat' => 'test'
             ];
             Message::create($message);
