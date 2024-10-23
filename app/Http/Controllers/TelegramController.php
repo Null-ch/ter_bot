@@ -39,6 +39,7 @@ class TelegramController extends Controller
         //     'Приоритет',
         //     'Суть обращения'
         // ];
+        Log::info($update);
         if (isset($update['business_message'])) {
             $userId = $update['business_message']['from']['id'];
             $nick = $update['business_message']['from']['username'];
