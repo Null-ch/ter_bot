@@ -1,7 +1,6 @@
 <?php
 
 use Telegram\Bot\Commands\HelpCommand;
-use App\Services\TelegramCommands\StartCommand;
 
 return [
     /*
