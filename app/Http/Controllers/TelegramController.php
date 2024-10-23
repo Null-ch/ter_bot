@@ -47,7 +47,7 @@ class TelegramController extends Controller
             $nick = $user->getUsername();
             $username = $user->getFirstName() . $user->getLastName();
             $message = [
-                'message' => $text,
+                'message' => 'dfgdf',
                 'user_tg' => 1,
                 'chat' => 'test'
             ];
