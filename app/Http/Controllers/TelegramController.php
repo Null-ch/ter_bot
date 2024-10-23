@@ -39,27 +39,44 @@ class TelegramController extends Controller
         //     'Приоритет',
         //     'Суть обращения'
         // ];
-        $test = json_encode($update);
-        $message = [
-            'message' => $test,
-            'user_tg' => 1,
-            'chat' => 'test'
-        ];
-        Message::create($message);
-        if ($update->getMessage()) {
-            $chatId = $update->getMessage()->getChat()->getId();
-            $userId = $update->getMessage()->getFrom()->getId();
-            $text = $update->getMessage()->getText();
-            $user = $update->getMessage()->getFrom();
-            $nick = $user->getUsername();
-            $username = $user->getFirstName() . $user->getLastName();
-
-            // if ($chatId < 0) {
-            //     $groupName = 'Личные сообщения';
-            // } else {
-            //     $groupName = Telegram::getChat(['chat_id' => $chatId])->getTitle();
-            // }
-
+        if (isset($update['business_message'])) {
+            $userId = $update['business_message']['from']['id'];
+            $nick = $update['business_message']['from']['username'];
+            $username = $update['business_message']['from']['first_name'] . " " . $update['business_message']['last_name'];
+            $text = $update['business_message']['text'];
+            $groupName = 'Личные сообщения';
+            $lastMessage = Message::active()->where('user_tg', $userId)
+                ->where('chat', $groupName)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 1) {
+                return;
+            } else {
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'chat' => $groupName
+                ];
+                Message::create($message);
+                Telegram::sendMessage([
+                    // 'chat_id' => '-1002384608890',
+                    'chat_id' => '395590080',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+            }
+        } elseif ($update->getMessage()) {
+            // $chatId = $update->getMessage()->getChat()->getId();
+            // $userId = $update->getMessage()->getFrom()->getId();
+            // $text = $update->getMessage()->getText();
+            // $user = $update->getMessage()->getFrom();
+            // $nick = $user->getUsername();
+            // $username = $user->getFirstName() . $user->getLastName();
+            $message = [
+                'message' => $update,
+                'user_tg' => $userId,
+                'chat' => 'test'
+            ];
+            Message::create($message);
             // $lastMessage = Message::active()->where('user_tg', $userId)
             //     ->where('chat', $groupName)
             //     ->orderBy('created_at', 'desc')
@@ -74,11 +91,12 @@ class TelegramController extends Controller
             //         'chat' => $groupName
             //     ];
             //     Message::create($message);
-                // Telegram::sendMessage([
-                //     'chat_id' => '-1002384608890',
-                //     'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                // ]);
-            // }
+            //     Telegram::sendMessage([
+            //                             // 'chat_id' => '-1002384608890',
+            //                             'chat_id' => '395590080',
+            //         'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+            //     ]);
+            }
 
             // if ($text === '/start') {
             //     $keyboard = [
