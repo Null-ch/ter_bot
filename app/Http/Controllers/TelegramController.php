@@ -67,6 +67,7 @@ class TelegramController extends Controller
                 ]);
             }
         }
+
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $chat = Telegram::getChat(['chat_id' => $chatId]);
@@ -89,6 +90,7 @@ class TelegramController extends Controller
                 $message = [
                     'message' => $text,
                     'user_tg' => $userId,
+                    'client' => $username,
                     'chat' => $groupName
                 ];
                 Message::create($message);
