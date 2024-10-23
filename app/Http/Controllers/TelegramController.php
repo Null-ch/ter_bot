@@ -30,12 +30,12 @@ class TelegramController extends Controller
     {
         $update = Telegram::getWebhookUpdates();
         $list = [
-            '#Тема',
-            '#Метка',
-            '#Исполнитель',
-            '#Услуга',
-            '#Приоритет',
-            '#Суть_обращения'
+            'Тема',
+            'Метка',
+            'Исполнитель',
+            'Услуга',
+            'Приоритет',
+            'Суть обращения'
         ];
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
