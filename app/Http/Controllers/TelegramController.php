@@ -43,7 +43,7 @@ class TelegramController extends Controller
         if (isset($update['business_message'])) {
             $userId = $update['business_message']['from']['id'];
             $nick = $update['business_message']['from']['username'];
-            $username = $update['business_message']['from']['first_name'] . " " . isset($update['business_message']['last_name']) ? $update['business_message']['last_name'] : '';
+            $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
             $lastMessage = Message::active()->where('user_tg', $userId)
