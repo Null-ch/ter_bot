@@ -73,7 +73,17 @@ class TelegramController extends Controller
             $user = $update->getMessage()->getFrom();
             $nick = $user->getUsername();
             $username = $user->getFirstName() . " " . $user->getLastName();
-
+            $test = json_encode([
+                'chatId' =>$chatId,
+                'user' => $user,
+                $update
+            ]);
+            Telegram::sendMessage([
+                // 'chat_id' => '-1002384608890',
+                'chat_id' => '395590080',
+                'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+            ]);
+            return;
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
