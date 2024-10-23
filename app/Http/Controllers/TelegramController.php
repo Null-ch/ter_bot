@@ -32,6 +32,7 @@ class TelegramController extends Controller
         if ($update->getMessage()) {
             $chatId = $update->getMessage()->getChat()->getId();
             $text = $update->getMessage()->getText();
+            $userId = $update->getMessage()->getFrom()->getId();
 
             if ($text === '/start') {
                 $keyboard = [
@@ -69,6 +70,16 @@ class TelegramController extends Controller
                         'inline_keyboard' => $keyboard
                     ])
                 ]);
+            } else {
+                $userData = session($userId, []);
+                $userData[] = $text;
+                session(['user.' . $userId => $userData]);
+                Log::info(json_encode($userData));
+                Telegram::sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Введите email:',
+                    'reply_markup' => json_encode(['force_reply' => true])
+                ]);
             }
         }
 
@@ -85,16 +96,6 @@ class TelegramController extends Controller
                 Telegram::sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Введите ' . $data . ':',
-                ]);
-            } elseif ($data === 'send') {
-
-                $name = $userData['name'] ?? '';
-                $email = $userData['email'] ?? '';
-                $message = $userData['message'] ?? '';
-                Log::info(json_encode($userData));
-                Telegram::sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Спасибо за обратную связь!',
                 ]);
             } else {
                 $text = $callbackQuery->getMessage()->getText();
