@@ -58,7 +58,6 @@ class TelegramController extends Controller
                     ])
                 ]);
             } elseif ($this->checkAllWordsPresent($text, $list)) {
-
                 Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
                     'text' => $text . "Ник в ТГ: {$nick} Пользователь: {$username}",
@@ -84,16 +83,16 @@ class TelegramController extends Controller
         }
     }
     function checkAllWordsPresent($text, $wordsList) {
-        $words = explode(' ', strtolower($text));
-        $words = array_map(function($word) {
-            return preg_replace('/[^\w\s]/', '', $word);
-        }, $words);
+        // $words = explode(' ', strtolower($text));
+        // $words = array_map(function($word) {
+        //     return preg_replace('/[^\w\s]/', '', $word);
+        // }, $words);
 
-        foreach ($wordsList as $word) {
-            if (!in_array(strtolower($word), $words)) {
-                return false;
-            }
-        }
+        // foreach ($wordsList as $word) {
+        //     if (!in_array(strtolower($word), $words)) {
+        //         return false;
+        //     }
+        // }
         
         return true;
     }
