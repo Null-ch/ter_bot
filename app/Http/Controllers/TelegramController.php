@@ -52,7 +52,7 @@ class TelegramController extends Controller
         if ($update->getMessage()) {
             Telegram::sendMessage([
                 'chat_id' => '395590080',
-                'text' => $update->getMessage(),
+                'text' => json_encode($update->getMessage()),
             ]);
             return;
         } elseif (isset($update['business_message'])) {
