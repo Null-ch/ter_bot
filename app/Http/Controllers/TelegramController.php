@@ -31,15 +31,20 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
+        Telegram::sendMessage([
+            'chat_id' => '-1002384608890',
+            'text' => $update,
+        ]);
+        return;
         $admins = [
             '6899147031',
             '6256784114',
             '6960195534',
-            // '395590080',
-            // '344590941',
-            // '615007058',
-            // '774982582',
-            // '5000707181',
+            '395590080',
+            '344590941',
+            '615007058',
+            '774982582',
+            '5000707181',
         ];
         if (isset($update['business_message']) && isset($update['business_message']['text'])) {
             $userId = $update['business_message']['from']['id'];
@@ -58,23 +63,22 @@ class TelegramController extends Controller
                 return;
             } else {
                 $response = Telegram::sendMessage([
-                    // 'chat_id' => '-1002384608890',
-                    // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                    'chat_id' => '395590080',
-                    'text' => $update['business_message'],
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
-                // $message = [
-                //     'message' => $text,
-                //     'user_tg' => $userId,
-                //     'client' => $username,
-                //     'message_id' => $messageId,
-                //     'chat' => $groupName
-                // ];
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'client' => $username,
+                    'message_id' => $messageId,
+                    'chat' => $groupName
+                ];
 
-                // Message::create($message);
+                Message::create($message);
             }
         } elseif ($update->getMessage()) {
+
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
             if (in_array($userId, $admins) || $text == '/start') {
@@ -99,21 +103,19 @@ class TelegramController extends Controller
                 return;
             } else {
                 $response = Telegram::sendMessage([
-                    // 'chat_id' => '-1002384608890',
-                    // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                    'chat_id' => '395590080',
-                    'text' => $update,
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
-                // $message = [
-                //     'message' => $text,
-                //     'user_tg' => $userId,
-                //     'client' => $username,
-                //     'message_id' => $messageId,
-                //     'chat' => $groupName
-                // ];
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'client' => $username,
+                    'message_id' => $messageId,
+                    'chat' => $groupName
+                ];
 
-                // Message::create($message);
+                Message::create($message);
             }
         }
     }
