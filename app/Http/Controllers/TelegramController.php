@@ -36,6 +36,8 @@ class TelegramController extends Controller
             '6256784114',
             '6960195534',
             '395590080',
+            '344590941',
+            '615007058',
         ];
         if (isset($update['business_message']) && isset($update['business_message']['text'])) {
             $userId = $update['business_message']['from']['id'];
