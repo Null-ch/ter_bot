@@ -49,10 +49,16 @@ class TelegramController extends Controller
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();
-        if ($update->getMessage() || isset($update['business_message'])) {
+        if ($update->getMessage()) {
             Telegram::sendMessage([
                 'chat_id' => '395590080',
-                'text' => '123',
+                'text' => $update->getMessage(),
+            ]);
+            return;
+        } elseif (isset($update['business_message'])) {
+            Telegram::sendMessage([
+                'chat_id' => '395590080',
+                'text' => $update['business_message'],
             ]);
             return;
         }
