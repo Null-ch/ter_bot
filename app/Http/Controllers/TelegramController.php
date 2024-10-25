@@ -28,6 +28,24 @@ class TelegramController extends Controller
             return 'Ошибка';
         }
     }
+
+    public function removeWebhook()
+    {
+        $token = env('TELEGRAM_BOT_TOKEN');
+        $telegramUrl = 'https://api.telegram.org/bot' . $token . '/deleteWebhook';
+
+        $client = new Client();
+        $response = $client->request('GET', $telegramUrl);
+
+        $status = $response->getStatusCode();
+
+        if ($status == 200) {
+            return 'Вебхук успешно удален!';
+        } else {
+            return 'Ошибка при удалении вебхука';
+        }
+    }
+
     public function handleWebhook(Request $request)
     {
         $update = Telegram::getWebhookUpdates();

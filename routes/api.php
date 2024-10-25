@@ -17,3 +17,4 @@ use App\Http\Controllers\TelegramController;
 
 Route::post('/webhook', [TelegramController::class, 'handleWebhook'])->name('telegram_webhook');
 Route::get('/webhook/set', [TelegramController::class, 'setWebhook']);
+Route::get('/webhook/remove', [TelegramController::class, 'removeWebhook']);
