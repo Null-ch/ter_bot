@@ -61,7 +61,7 @@ class TelegramController extends Controller
                     // 'chat_id' => '-1002384608890',
                     // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                     'chat_id' => '395590080',
-                    'text' => $text,
+                    'text' => $update['business_message'],
                 ]);
                 $messageId = $response->getMessageId();
                 $message = [
@@ -102,7 +102,7 @@ class TelegramController extends Controller
                     // 'chat_id' => '-1002384608890',
                     // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                     'chat_id' => '395590080',
-                    'text' => $text,
+                    'text' => $update,
                 ]);
                 $messageId = $response->getMessageId();
                 $message = [
