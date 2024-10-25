@@ -32,7 +32,7 @@ class TelegramController extends Controller
     {
         $update = Telegram::getWebhookUpdates();
         Telegram::sendMessage([
-            'chat_id' => '-1002384608890',
+            'chat_id' => '395590080',
             'text' => $update,
         ]);
         return;
