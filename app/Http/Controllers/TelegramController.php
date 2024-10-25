@@ -64,15 +64,15 @@ class TelegramController extends Controller
                     'text' => $update['business_message'],
                 ]);
                 $messageId = $response->getMessageId();
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'client' => $username,
-                    'message_id' => $messageId,
-                    'chat' => $groupName
-                ];
+                // $message = [
+                //     'message' => $text,
+                //     'user_tg' => $userId,
+                //     'client' => $username,
+                //     'message_id' => $messageId,
+                //     'chat' => $groupName
+                // ];
 
-                Message::create($message);
+                // Message::create($message);
             }
         } elseif ($update->getMessage()) {
             $userId = $update->getMessage()->getFrom()->getId();
@@ -105,15 +105,15 @@ class TelegramController extends Controller
                     'text' => $update,
                 ]);
                 $messageId = $response->getMessageId();
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'client' => $username,
-                    'message_id' => $messageId,
-                    'chat' => $groupName
-                ];
+                // $message = [
+                //     'message' => $text,
+                //     'user_tg' => $userId,
+                //     'client' => $username,
+                //     'message_id' => $messageId,
+                //     'chat' => $groupName
+                // ];
 
-                Message::create($message);
+                // Message::create($message);
             }
         }
     }
