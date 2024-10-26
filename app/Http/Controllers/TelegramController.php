@@ -82,6 +82,7 @@ class TelegramController extends Controller
             }
             $businessConnectionId = $update['business_message']['business_connection_id'];
             // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
+            $res = json_encode($update['business_message']);
             $chatId = $update['business_message']['chat']['id'];
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
@@ -90,7 +91,7 @@ class TelegramController extends Controller
             $response = Telegram::sendMessage([
                 // 'chat_id' => '-1002384608890',
                 'chat_id' => '395590080',
-                'text' => "123",
+                'text' => $res,
                 // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
             ]);
             // $lastMessage = Message::active()->where('user_tg', $userId)
