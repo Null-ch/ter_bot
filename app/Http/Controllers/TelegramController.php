@@ -155,7 +155,7 @@ class TelegramController extends Controller
     function getBusinessConnectionDetails($businessConnectionId) {
         $businessConnections = self::BUSINESS_CONNECTIONS;
         if (Arr::has($businessConnections, $businessConnectionId)) {
-            return $businessConnections[$businessConnectionId];
+            return json_encode($businessConnections[$businessConnectionId]);
         } else {
             return null;
         }
