@@ -64,8 +64,7 @@ class TelegramController extends Controller
             if (in_array($userId, $admins)) {
                 return;
             }
-            $chatId = $update->getChat()->getId();
-            $members = Telegram::getChatMembers(['chat_id' => $chatId]);
+            $chatId = $update['business_message']['chat']['id'];
             $chat = Telegram::getChat(['chat_id' => $chatId]);
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
@@ -78,7 +77,6 @@ class TelegramController extends Controller
             if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
                 return;
             } else {
-                $test = json_encode($update['business_message']);
                 $response = Telegram::sendMessage([
                     // 'chat_id' => '-1002384608890',
                     'chat_id' => '395590080',
