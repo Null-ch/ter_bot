@@ -75,13 +75,13 @@ class TelegramController extends Controller
             '774982582',
             '5000707181',
         ];
-        if (isset($update['business_message']) && isset($update['business_message']['text'])) {
+        if (isset($update['business_message']) && isset($update['business_message']['text']) && $update['business_message']['business_connection_id']) {
             $userId = $update['business_message']['from']['id'];
             if (in_array($userId, $admins)) {
                 return;
             }
             $businessConnectionId = $update['business_message']['business_connection_id'];
-            $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
+            // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
             $chatId = $update['business_message']['chat']['id'];
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
