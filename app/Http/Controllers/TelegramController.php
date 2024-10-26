@@ -65,7 +65,7 @@ class TelegramController extends Controller
                 return;
             }
             $chatId = $update['business_message']['chat']['id'];
-            $chat = Telegram::getChat(['chat_id' => $chatId]);
+            $res = Telegram::getMe();
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
@@ -80,7 +80,7 @@ class TelegramController extends Controller
                 $response = Telegram::sendMessage([
                     // 'chat_id' => '-1002384608890',
                     'chat_id' => '395590080',
-                    'text' => $chat,
+                    'text' => $res,
                     // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
