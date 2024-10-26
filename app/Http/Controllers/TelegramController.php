@@ -99,7 +99,7 @@ class TelegramController extends Controller
 
                 Message::create($message);
             }
-        } elseif ($update->getMessage()) {
+        } elseif ($update->getMessage() && $update->getMessage()->getFrom()) {
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
             if (in_array($userId, $admins) || $text == '/start') {
