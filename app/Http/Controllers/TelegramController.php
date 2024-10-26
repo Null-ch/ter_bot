@@ -67,7 +67,7 @@ class TelegramController extends Controller
             }
             // $businessConnectionId = $update['business_message']['business_connection_id'];
             // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
-            $res = json_encode($update['business_message']);
+            // $res = json_encode($update['business_message']);
             $chatId = $update['business_message']['chat']['id'];
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
@@ -77,28 +77,28 @@ class TelegramController extends Controller
                 'chat_id' => '395590080',
                 'text' => $res,
             ]);
-            // $lastMessage = Message::active()->where('user_tg', $userId)
-            //     ->where('chat', $groupName)
-            //     ->orderBy('created_at', 'desc')
-            //     ->first();
-            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
-            //     return;
-            // } else {
-            //     $response = Telegram::sendMessage([
-            //         'chat_id' => '-1002384608890',
-            //         'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            //     ]);
-            //     $messageId = $response->getMessageId();
-            //     $message = [
-            //         'message' => $text,
-            //         'user_tg' => $userId,
-            //         'client' => $username,
-            //         'message_id' => $messageId,
-            //         'chat' => $groupName
-            //     ];
+            $lastMessage = Message::active()->where('user_tg', $userId)
+                ->where('chat', $groupName)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
+                return;
+            } else {
+                $response = Telegram::sendMessage([
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+                $messageId = $response->getMessageId();
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'client' => $username,
+                    'message_id' => $messageId,
+                    'chat' => $groupName
+                ];
 
-            //     Message::create($message);
-            // }
+                Message::create($message);
+            }
         } elseif ($update->getMessage() && $update->getMessage()->getFrom()) {
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
@@ -141,25 +141,25 @@ class TelegramController extends Controller
             }
         }
     }
-    function getBusinessConnectionDetails($businessConnectionId) {
-        $businessConnections = [
-            'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
-                'nick' => '@HelpDesk_MO',
-                'name' => 'Helpdesk Terminal МО',
-            ],
-            'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
-                'nick' => '@HelpdeskOrionTerminal',
-                'name' => 'HelpDesk Orion-Terminal',
-            ],
-            'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
-                'nick' => '@HelpdeskTerminal',
-                'name' => 'Helpdesk Terminal'
-            ]
-        ];
-        if (Arr::has($businessConnections, $businessConnectionId)) {
-            return json_encode($businessConnections[$businessConnectionId]);
-        } else {
-            return null;
-        }
-    }
+    // function getBusinessConnectionDetails($businessConnectionId) {
+    //     $businessConnections = [
+    //         'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
+    //             'nick' => '@HelpDesk_MO',
+    //             'name' => 'Helpdesk Terminal МО',
+    //         ],
+    //         'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
+    //             'nick' => '@HelpdeskOrionTerminal',
+    //             'name' => 'HelpDesk Orion-Terminal',
+    //         ],
+    //         'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
+    //             'nick' => '@HelpdeskTerminal',
+    //             'name' => 'Helpdesk Terminal'
+    //         ]
+    //     ];
+    //     if (Arr::has($businessConnections, $businessConnectionId)) {
+    //         return json_encode($businessConnections[$businessConnectionId]);
+    //     } else {
+    //         return null;
+    //     }
+    // }
 }
