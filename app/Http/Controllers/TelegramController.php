@@ -12,21 +12,6 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
 {
-    CONST BUSINESS_CONNECTIONS = [
-        'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
-            'nick' => '@HelpDesk_MO',
-            'name' => 'Helpdesk Terminal МО',
-        ],
-        'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
-            'nick' => '@HelpdeskOrionTerminal',
-            'name' => 'HelpDesk Orion-Terminal',
-        ],
-        'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
-            'nick' => '@HelpdeskTerminal',
-            'name' => 'Helpdesk Terminal'
-        ],
-    ];
-
     public function setWebhook()
     {
         $token = env('TELEGRAM_BOT_TOKEN');
@@ -159,7 +144,20 @@ class TelegramController extends Controller
         }
     }
     function getBusinessConnectionDetails($businessConnectionId) {
-        $businessConnections = self::BUSINESS_CONNECTIONS;
+        $businessConnections = [
+            'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
+                'nick' => '@HelpDesk_MO',
+                'name' => 'Helpdesk Terminal МО',
+            ],
+            'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
+                'nick' => '@HelpdeskOrionTerminal',
+                'name' => 'HelpDesk Orion-Terminal',
+            ],
+            'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
+                'nick' => '@HelpdeskTerminal',
+                'name' => 'Helpdesk Terminal'
+            ]
+        ];
         if (Arr::has($businessConnections, $businessConnectionId)) {
             return json_encode($businessConnections[$businessConnectionId]);
         } else {
