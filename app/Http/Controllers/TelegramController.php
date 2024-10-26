@@ -87,30 +87,34 @@ class TelegramController extends Controller
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
-            $lastMessage = Message::active()->where('user_tg', $userId)
-                ->where('chat', $groupName)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
-                return;
-            } else {
-                $response = Telegram::sendMessage([
-                    // 'chat_id' => '-1002384608890',
-                    'chat_id' => '395590080',
-                    'text' => "123",
-                    // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                ]);
-                // $messageId = $response->getMessageId();
-                // $message = [
-                //     'message' => $text,
-                //     'user_tg' => $userId,
-                //     'client' => $username,
-                //     'message_id' => $messageId,
-                //     'chat' => $groupName
-                // ];
+            $response = Telegram::sendMessage([
+                // 'chat_id' => '-1002384608890',
+                'chat_id' => '395590080',
+                'text' => "123",
+                // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+            ]);
+            // $lastMessage = Message::active()->where('user_tg', $userId)
+            //     ->where('chat', $groupName)
+            //     ->orderBy('created_at', 'desc')
+            //     ->first();
+            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
+            //     return;
+            // } else {
+            //     $response = Telegram::sendMessage([
+            //         'chat_id' => '-1002384608890',
+            //         'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+            //     ]);
+            //     $messageId = $response->getMessageId();
+            //     $message = [
+            //         'message' => $text,
+            //         'user_tg' => $userId,
+            //         'client' => $username,
+            //         'message_id' => $messageId,
+            //         'chat' => $groupName
+            //     ];
 
-                // Message::create($message);
-            }
+            //     Message::create($message);
+            // }
         } elseif ($update->getMessage()) {
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
