@@ -67,11 +67,12 @@ class TelegramController extends Controller
                 return;
             }
             $businessConnectionId = $update['business_message']['business_connection_id'];
-            $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
-            if ($currentAccountInfo) {
+            $currentAccount = $this->getBusinessConnectionDetails($businessConnectionId);
+            if ($currentAccount) {
+                $accountInfoString = "\n Аккаунт: {$currentAccount}";
                 $response = Telegram::sendMessage([
                     'chat_id' => '395590080',
-                    'text' => $currentAccountInfo,
+                    'text' => $accountInfoString,
                 ]);
             } else {
                 $response = Telegram::sendMessage([
@@ -150,26 +151,13 @@ class TelegramController extends Controller
         }
     }
 
-    function getBusinessConnectionDetails($businessConnectionId) {
-        $businessConnections = [
-            'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
-                'nick' => '@HelpDesk_MO',
-                'name' => 'Helpdesk Terminal МО',
-            ],
-            'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
-                'nick' => '@HelpdeskOrionTerminal',
-                'name' => 'HelpDesk Orion-Terminal',
-            ],
-            'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
-                'nick' => '@HelpdeskTerminal',
-                'name' => 'Helpdesk Terminal'
-            ]
-        ];
-
-        if (Arr::has($businessConnections, $businessConnectionId)) {
-            return json_encode($businessConnections[$businessConnectionId]);
-        } else {
-            return null;
-        }
+    function getBusinessConnectionDetails($businessConnectionId)
+    {
+        return match ($businessConnectionId) {
+            'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => '@HelpDesk_MO',
+            'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => '@HelpdeskOrionTerminal',
+            'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => '@HelpdeskTerminal',
+            default => null
+        };
     }
 }
