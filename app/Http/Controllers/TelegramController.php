@@ -83,16 +83,16 @@ class TelegramController extends Controller
                     'text' => $res,
                     // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
-                $messageId = $response->getMessageId();
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'client' => $username,
-                    'message_id' => $messageId,
-                    'chat' => $groupName
-                ];
+                // $messageId = $response->getMessageId();
+                // $message = [
+                //     'message' => $text,
+                //     'user_tg' => $userId,
+                //     'client' => $username,
+                //     'message_id' => $messageId,
+                //     'chat' => $groupName
+                // ];
 
-                Message::create($message);
+                // Message::create($message);
             }
         } elseif ($update->getMessage()) {
             $userId = $update->getMessage()->getFrom()->getId();
