@@ -69,6 +69,7 @@ class TelegramController extends Controller
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
+            $test = json_encode($update);
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
@@ -79,7 +80,7 @@ class TelegramController extends Controller
                 $response = Telegram::sendMessage([
                     // 'chat_id' => '-1002384608890',
                     'chat_id' => '395590080',
-                    'text' => json_encode($update['business_message']),
+                    'text' => $test,
                     // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 // $messageId = $response->getMessageId();
