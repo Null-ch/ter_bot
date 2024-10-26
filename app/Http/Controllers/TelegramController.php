@@ -66,12 +66,12 @@ class TelegramController extends Controller
             if (in_array($userId, $admins)) {
                 return;
             }
-            // $businessConnectionId = $update['business_message']['business_connection_id'];
+            $businessConnectionId = $update['business_message']['business_connection_id'];
             // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
             $res = json_encode($update['business_message']);
             $response = Telegram::sendMessage([
                 'chat_id' => '395590080',
-                'text' => $res,
+                'text' => $businessConnectionId,
             ]);
             // $chatId = $update['business_message']['chat']['id'];
             // $nick = $update['business_message']['from']['username'];
