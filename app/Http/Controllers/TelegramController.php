@@ -51,9 +51,9 @@ class TelegramController extends Controller
     {
         $update = Telegram::getWebhookUpdates();
         $admins = [
-            // '6899147031',
-            // '6256784114',
-            // '6960195534',
+            '6899147031',
+            '6256784114',
+            '6960195534',
             // '395590080',
             '344590941',
             '615007058',
@@ -82,7 +82,7 @@ class TelegramController extends Controller
             } else {
                 $response = Telegram::sendMessage([
                     'chat_id' => '395590080',
-                    // 'chat_id' => '-1002384608890',
+                    'chat_id' => '-1002384608890',
                     'text' => "Аккаунт: $currentAccount\nСодержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
