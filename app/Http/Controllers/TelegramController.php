@@ -51,14 +51,14 @@ class TelegramController extends Controller
     {
         $update = Telegram::getWebhookUpdates();
         $admins = [
-            '6899147031',
-            '6256784114',
-            '6960195534',
+            // '6899147031',
+            // '6256784114',
+            // '6960195534',
             // '395590080',
-            '344590941',
-            '615007058',
-            '774982582',
-            '5000707181',
+            // '344590941',
+            // '615007058',
+            // '774982582',
+            // '5000707181',
         ];
 
         if (isset($update['business_message']) && isset($update['business_message']['text'])) {
