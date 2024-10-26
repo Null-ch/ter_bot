@@ -65,7 +65,7 @@ class TelegramController extends Controller
             if (in_array($userId, $admins)) {
                 return;
             }
-            $businessConnectionId = $update['business_message']['business_connection_id'];
+            // $businessConnectionId = $update['business_message']['business_connection_id'];
             // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
             // $res = json_encode($update['business_message']);
             $chatId = $update['business_message']['chat']['id'];
@@ -73,32 +73,32 @@ class TelegramController extends Controller
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
-            $response = Telegram::sendMessage([
-                'chat_id' => '395590080',
-                'text' => $businessConnectionId,
-            ]);
-            // $lastMessage = Message::active()->where('user_tg', $userId)
-            //     ->where('chat', $groupName)
-            //     ->orderBy('created_at', 'desc')
-            //     ->first();
-            // if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
-            //     return;
-            // } else {
-            //     $response = Telegram::sendMessage([
-            //         'chat_id' => '-1002384608890',
-            //         'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-            //     ]);
-            //     $messageId = $response->getMessageId();
-            //     $message = [
-            //         'message' => $text,
-            //         'user_tg' => $userId,
-            //         'client' => $username,
-            //         'message_id' => $messageId,
-            //         'chat' => $groupName
-            //     ];
+            // $response = Telegram::sendMessage([
+            //     'chat_id' => '395590080',
+            //     'text' => $businessConnectionId,
+            // ]);
+            $lastMessage = Message::active()->where('user_tg', $userId)
+                ->where('chat', $groupName)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 15) {
+                return;
+            } else {
+                $response = Telegram::sendMessage([
+                    'chat_id' => '-1002384608890',
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                ]);
+                $messageId = $response->getMessageId();
+                $message = [
+                    'message' => $text,
+                    'user_tg' => $userId,
+                    'client' => $username,
+                    'message_id' => $messageId,
+                    'chat' => $groupName
+                ];
 
-            //     Message::create($message);
-            // }
+                Message::create($message);
+            }
         } elseif ($update->getMessage() && $update->getMessage()->getFrom()) {
             $userId = $update->getMessage()->getFrom()->getId();
             $text = $update->getMessage()->getText();
