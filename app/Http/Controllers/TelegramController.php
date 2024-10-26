@@ -81,7 +81,8 @@ class TelegramController extends Controller
                 return;
             } else {
                 $response = Telegram::sendMessage([
-                    'chat_id' => '-1002384608890',
+                    'chat_id' => '395590080',
+                    // 'chat_id' => '-1002384608890',
                     'text' => "Аккаунт: $currentAccount\nСодержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
