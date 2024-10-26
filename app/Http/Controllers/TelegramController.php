@@ -54,7 +54,7 @@ class TelegramController extends Controller
             '6899147031',
             '6256784114',
             '6960195534',
-            // '395590080',
+            '395590080',
             '344590941',
             '615007058',
             '774982582',
@@ -68,15 +68,15 @@ class TelegramController extends Controller
             // $businessConnectionId = $update['business_message']['business_connection_id'];
             // $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
             // $res = json_encode($update['business_message']);
+            // $response = Telegram::sendMessage([
+            //     'chat_id' => '395590080',
+            //     'text' => $businessConnectionId,
+            // ]);
             $chatId = $update['business_message']['chat']['id'];
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
-            // $response = Telegram::sendMessage([
-            //     'chat_id' => '395590080',
-            //     'text' => $businessConnectionId,
-            // ]);
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
