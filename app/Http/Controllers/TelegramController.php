@@ -5,12 +5,28 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Message;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramController extends Controller
 {
+    CONST BUSINESS_CONNECTIONS = [
+        'oxJk4Oab2EhrCQAAYWSsRiG7EZc' => [
+            'nick' => '@HelpDesk_MO',
+            'name' => 'Helpdesk Terminal МО',
+        ],
+        'kJ7HBIpn2UgaCQAAWoNNGeoijfI' => [
+            'nick' => '@HelpdeskOrionTerminal',
+            'name' => 'HelpDesk Orion-Terminal',
+        ],
+        'LJi3nkXG4EhiCQAArrgN6n2Zcrk' => [
+            'nick' => '@HelpdeskTerminal',
+            'name' => 'Helpdesk Terminal'
+        ],
+    ];
+
     public function setWebhook()
     {
         $token = env('TELEGRAM_BOT_TOKEN');
@@ -64,12 +80,13 @@ class TelegramController extends Controller
             if (in_array($userId, $admins)) {
                 return;
             }
+            $businessConnectionId = $update['business_message']['business_connection_id'];
+            $currentAccountInfo = $this->getBusinessConnectionDetails($businessConnectionId);
             $chatId = $update['business_message']['chat']['id'];
             $nick = $update['business_message']['from']['username'];
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
-            $test = json_encode($update);
             $lastMessage = Message::active()->where('user_tg', $userId)
                 ->where('chat', $groupName)
                 ->orderBy('created_at', 'desc')
@@ -80,8 +97,7 @@ class TelegramController extends Controller
                 $response = Telegram::sendMessage([
                     // 'chat_id' => '-1002384608890',
                     'chat_id' => '395590080',
-                    'text' => $test,
-                    // 'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName}\n Аккаунт: {$currentAccountInfo} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                 ]);
                 // $messageId = $response->getMessageId();
                 // $message = [
@@ -134,6 +150,14 @@ class TelegramController extends Controller
 
                 Message::create($message);
             }
+        }
+    }
+    function getBusinessConnectionDetails($businessConnectionId) {
+        $businessConnections = self::BUSINESS_CONNECTIONS;
+        if (Arr::has($businessConnections, $businessConnectionId)) {
+            return $businessConnections[$businessConnectionId];
+        } else {
+            return null;
         }
     }
 }
