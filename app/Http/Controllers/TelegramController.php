@@ -69,7 +69,7 @@ class TelegramController extends Controller
             $businessConnectionId = $update['business_message']['business_connection_id'];
             $currentAccount = $this->getBusinessConnectionDetails($businessConnectionId);
             $chatId = $update['business_message']['chat']['id'];
-            $nick = isset($update['business_message']['from']['username']) ? "\nНик пользователя в ТГ:" . $update['business_message']['from']['username'] : "\n";
+            $nick = isset($update['business_message']['from']['username']) ? "\nНик пользователя в ТГ:" . "@" . $update['business_message']['from']['username'] : "\n";
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
