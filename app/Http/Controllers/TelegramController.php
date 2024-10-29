@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Message;
-use Illuminate\Support\Arr;
+use BadMethodCallException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -95,44 +95,48 @@ class TelegramController extends Controller
 
                 Message::create($message);
             }
-        } elseif ($update->getMessage() && $update->getMessage()->getFrom()) {
-            $userId = $update->getMessage()->getFrom()->getId();
-            $text = $update->getMessage()->getText();
-            if (in_array($userId, $admins) || $text == '/start') {
-                return;
-            }
-            $chatId = $update->getMessage()->getChat()->getId();
-            $chat = Telegram::getChat(['chat_id' => $chatId]);
-            $groupName = $chat->getTitle();
-            if (!$groupName) {
-                $groupName = 'Личные сообщения';
-            }
-            $user = $update->getMessage()->getFrom();
-            $nick = $user->getUsername();
-            $username = $user->getFirstName() . " " . $user->getLastName();
+        } elseif ($update->getMessage()) {
+            try {
+                $userId = $update->getMessage()->getFrom()->getId();
+                $text = $update->getMessage()->getText();
+                if (in_array($userId, $admins) || $text == '/start') {
+                    return;
+                }
+                $chatId = $update->getMessage()->getChat()->getId();
+                $chat = Telegram::getChat(['chat_id' => $chatId]);
+                $groupName = $chat->getTitle();
+                if (!$groupName) {
+                    $groupName = 'Личные сообщения';
+                }
+                $user = $update->getMessage()->getFrom();
+                $nick = $user->getUsername();
+                $username = $user->getFirstName() . " " . $user->getLastName();
 
-            $lastMessage = Message::active()->where('user_tg', $userId)
-                ->where('chat', $groupName)
-                ->orderBy('created_at', 'desc')
-                ->first();
+                $lastMessage = Message::active()->where('user_tg', $userId)
+                    ->where('chat', $groupName)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
 
-            if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 60) {
-                return;
-            } else {
-                $response = Telegram::sendMessage([
-                    'chat_id' => '-1002384608890',
-                    'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
-                ]);
-                $messageId = $response->getMessageId();
-                $message = [
-                    'message' => $text,
-                    'user_tg' => $userId,
-                    'client' => $username,
-                    'message_id' => $messageId,
-                    'chat' => $groupName
-                ];
+                if ($lastMessage && Carbon::now()->diffInMinutes($lastMessage->created_at) < 60) {
+                    return;
+                } else {
+                    $response = Telegram::sendMessage([
+                        'chat_id' => '-1002384608890',
+                        'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    ]);
+                    $messageId = $response->getMessageId();
+                    $message = [
+                        'message' => $text,
+                        'user_tg' => $userId,
+                        'client' => $username,
+                        'message_id' => $messageId,
+                        'chat' => $groupName
+                    ];
 
-                Message::create($message);
+                    Message::create($message);
+                }
+            } catch (BadMethodCallException $e) {
+                Log::error("Failed to get user ID: {$e->getMessage()}");
             }
         }
     }
