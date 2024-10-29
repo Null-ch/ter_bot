@@ -69,7 +69,7 @@ class TelegramController extends Controller
             $businessConnectionId = $update['business_message']['business_connection_id'];
             $currentAccount = $this->getBusinessConnectionDetails($businessConnectionId);
             $chatId = $update['business_message']['chat']['id'];
-            $nick = isset($update['business_message']['from']['username']) ? $update['business_message']['from']['username'] : "-";
+            $nick = isset($update['business_message']['from']['username']) ? "\nНик пользователя в ТГ:" . $update['business_message']['from']['username'] : "\n";
             $username = $update['business_message']['from']['first_name'];
             $text = $update['business_message']['text'];
             $groupName = 'Личные сообщения';
@@ -82,7 +82,7 @@ class TelegramController extends Controller
             } else {
                 $response = Telegram::sendMessage([
                     'chat_id' => '-1002384608890',
-                    'text' => "Аккаунт: {$currentAccount}\nСодержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                    'text' => "Аккаунт: {$currentAccount}\nСодержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} {$nick}\n Пользователь: {$username}",
                 ]);
                 $messageId = $response->getMessageId();
                 $message = [
