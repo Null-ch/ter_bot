@@ -122,7 +122,7 @@ class TelegramController extends Controller
                 } else {
                     $response = Telegram::sendMessage([
                         'chat_id' => '-1002384608890',
-                        'text' => "Содержимое сообщения:\n{$text}\n\n Пришло из: {$groupName} \n Ник пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
+                        'text' => "Содержимое сообщения:\n{$text}\n\nПришло из: {$groupName} \nНик пользователя в ТГ: @{$nick}\n Пользователь: {$username}",
                     ]);
                     $messageId = $response->getMessageId();
                     $message = [
